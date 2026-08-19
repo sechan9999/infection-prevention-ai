@@ -1,0 +1,101 @@
+# infection-prevention-ai
+
+A Skill + Agent architecture for hospital infection prevention.
+
+The premise: a community hospital runs infection prevention on 0.5 to 2.0 FTE and
+manual chart review. The bottleneck is not clinical judgment, it is the hours
+spent finding the cases that deserve judgment. This repo packages that first pass
+as an AI skill and the agents built on top of it.
+
+**The AI does not replace infection prevention professionals.** Every output is a
+candidate finding routed to a named human for approval, with its evidence and an
+audit record attached.
+
+---
+
+## Structure
+
+```
+infection-prevention-ai/
+│
+├── skills/
+│   └── infection-prevention-fde/
+│       ├── SKILL.md            # principles, reasoning workflow, output contract
+│       ├── knowledge.md        # surveillance definitions, epi logic, regulatory context
+│       ├── safety_rules.md     # hard constraints (override everything else)
+│       └── output_templates.md # fixed output shapes + audit record schema
+│
+└── agents/
+    └── infection-surveillance-agent/
+        ├── AGENT.md            # role, mission, data sources, boundaries
+        ├── workflow.md         # run modes, rule set, routing, feedback loop
+        └── tools.md            # tool contracts and their constraints
+```
+
+The skill is the reusable layer. Agents are thin: they declare a mission, a data
+scope, and a routing table, and inherit reasoning and safety from the skill.
+
+---
+
+## Core guarantees
+
+| Principle | What it means in the output |
+|---|---|
+| Evidence first | Every finding names its data source, guideline, and confidence number |
+| Human in the loop | Every finding names the role that must approve it before anything happens |
+| Auditability | Every finding writes an immutable JSON audit record |
+| Hospital customization | Rules and thresholds are configuration, not code |
+
+Hard limits, enforced in `safety_rules.md`: no diagnosis, no prescribing, no
+treatment changes, no clinician override, no hidden uncertainty, no PHI leaving
+the covered environment, no autonomous submission to any registry.
+
+---
+
+## Usage with Claude Code
+
+Both files are plain Markdown with YAML frontmatter, so they load directly:
+
+```bash
+mkdir -p ~/.claude/skills ~/.claude/agents
+cp -r skills/infection-prevention-fde ~/.claude/skills/
+cp agents/infection-surveillance-agent/AGENT.md ~/.claude/agents/infection-surveillance-agent.md
+```
+
+Then invoke the skill by name, or ask a surveillance question and let the
+description trigger it.
+
+For any other agent framework, `SKILL.md` is the system prompt, `safety_rules.md`
+is the non-negotiable prefix, and `output_templates.md` is the response schema.
+
+---
+
+## Roadmap
+
+**Phase 1 (this repo)**
+- Infection Prevention FDE Skill
+- Infection Surveillance Agent
+
+**Phase 2**
+- Outbreak Detection Agent
+- Policy Compliance Agent
+- Antibiotic Stewardship Agent
+
+**Phase 3**
+- FDE Deployment Agent: profiles a hospital's EHR, workflow, and staffing, then
+  configures and deploys the IP-OS stack for that specific environment
+
+---
+
+## Scope and disclaimer
+
+This is a decision-support scaffold, not a medical device and not a certified
+NHSN reporting system. Surveillance definitions summarized in `knowledge.md`
+change annually; the current CDC NHSN Patient Safety Component Manual and the
+hospital's own policy are the authority for any event that is counted, reported,
+or submitted.
+
+References: [CDC NHSN](https://www.cdc.gov/nhsn/) ·
+[CMS](https://www.cms.gov/) ·
+[WHO IPC](https://www.who.int/teams/integrated-health-services/infection-prevention-control) ·
+[IDSA guidelines](https://www.idsociety.org/practice-guideline/practice-guidelines/)
