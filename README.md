@@ -137,6 +137,23 @@ is the non-negotiable prefix, and `output_templates.md` is the response schema.
 
 ---
 
+## Conformance
+
+This repo is a specification, so there is nothing to unit test. What is tested is
+that every agent still obeys the architecture - inherits the one skill, binds the
+safety rules, declares a refusal surface, and produces only templates the skill
+defines.
+
+```bash
+bash scripts/conformance.sh
+```
+
+Twelve checks, run in CI on every push and pull request. See
+[scripts/README.md](scripts/README.md) for what each one catches and why it
+exists.
+
+---
+
 ## Roadmap
 
 **Phase 1 - done**

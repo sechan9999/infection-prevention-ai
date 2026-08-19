@@ -231,8 +231,7 @@ HTML validity of the portfolio card, bilingual span balance on the portfolio pag
   in with realistic data. A reader has to simulate the agent mentally to judge it.
 - **Templates accumulated without a coverage check.** Template 6 was orphaned for
   four commits before this report's C6 check caught it. The check should have
-  existed from commit 1. It now exists, but only as commands recorded in this
-  report - automating it remains open (Section 6.3).
+  existed from commit 1. It now exists as `scripts/conformance.sh` and runs in CI.
 - **The design document is the deliverable.** Spec-first was the right shape here,
   but it means there is no independent artifact to diff against, and conformance
   had to be defined retroactively in this report.
@@ -242,8 +241,10 @@ HTML validity of the portfolio card, bilingual span balance on the portfolio pag
 - Extract rules into `rules/*.yaml` with declared feed requirements, and make the
   capability manifest computable rather than procedural.
 - Add one worked example per agent, using synthetic data, in an `examples/` folder.
-- Run the C1-C11 conformance checks as a pre-commit hook or CI job, so a future
-  agent cannot be added without them.
+- ~~Run the C1-C11 conformance checks as a pre-commit hook or CI job~~ - **done**
+  2026-08-19: `scripts/conformance.sh` (12 checks, C12 added for the
+  template-level prohibitions) runs in CI on every push and pull request, and was
+  negative-tested against three deliberate breaks before being committed.
 - Have a practicing Infection Preventionist review `knowledge.md` before this is
   shown to any hospital as more than an architecture.
 
@@ -265,7 +266,7 @@ HTML validity of the portfolio card, bilingual span balance on the portfolio pag
 
 | Area | Suggestion | Expected benefit |
 |------|------------|------------------|
-| CI | Run conformance checks on push | Prevents orphaned templates and missing frontmatter |
+| CI | ~~Run conformance checks on push~~ - **done** | Prevents orphaned templates and missing frontmatter |
 | Rules | YAML rule registry with declared feeds | Makes the capability manifest executable |
 | Examples | Synthetic worked examples per agent | Makes the contracts judgeable by a clinician reviewer |
 
@@ -354,3 +355,4 @@ agent itself specifies.
 |---------|------|---------|--------|
 | 1.0 | 2026-08-19 | Completion report created for PDCA cycle #1 | Gyver |
 | 1.1 | 2026-08-19 | G-01/G-02/G-03 resolved; conformance re-run 40/40; cycle #1 closed | Gyver |
+| 1.2 | 2026-08-19 | Conformance suite automated as `scripts/conformance.sh` + CI; C12 added | Gyver |
