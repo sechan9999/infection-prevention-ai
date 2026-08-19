@@ -295,6 +295,87 @@ LESSONS AND PROPOSED CHANGES
 Closed by: <name, role>   Date: <date>
 Audit Record: Generated - <audit_id>
 ```
+
+---
+
+## Template 9: Stewardship Daily Worklist
+
+```
+Date: <YYYY-MM-DD>   Scope: <facility | unit | service>
+Patients on antimicrobials: <n>   Flags raised: <n>   Shown: <n>   Held: <n>
+Rule set version: <v>
+
+--- PRIORITY ---
+1. [S-MISMATCH-01] <patient_key> | <agent>, day <n>
+   Evidence: <organism> from <source>, collected <date>; panel shows
+             non-susceptible to <agent>
+   For stewardship review. Routed: pharmacist, paged.
+   Confidence: <n>% (<basis>)
+
+--- WORKLIST ---
+2. [S-DEESC-01] <patient_key> | <agent>, day <n>
+   Evidence: <organism> susceptible to <narrower agent>, result <datetime>
+   Pathway reference: <id, version>
+   Criteria met: <list>   Unverifiable from structured data: <list>
+   Confidence: <n>% (<basis>)
+
+3. [S-IVPO-01] ...
+
+--- HELD (<n>) ---
+<rule id> x <n> - reason: <daily capacity | already declined this admission>
+
+--- CHANGES SINCE YESTERDAY ---
+New: <n>   Resolved: <n>   Still open: <n>
+
+Human Approval Required:
+Yes - Stewardship Pharmacist. No flag proposes a therapy change.
+
+Audit Record:
+Generated - <audit_id>
+```
+
+---
+
+## Template 10: AU / AR Quarterly Package
+
+```
+Period: <Qn YYYY>   Prepared: <date>   Status: DRAFT - not submitted
+
+1. UTILIZATION
+   | Agent / class | DOT | Days present | DOT per 1000 days present | vs baseline |
+   Denominator used: days present (not patient days)
+
+   SAAR: <observed> / <predicted> = <value>
+   NHSN methodology version: <v>
+   Note: a SAAR prompts investigation. It is not a quality score and is not
+   comparable across facilities from this data.
+
+2. RESISTANCE
+   | Organism | Isolates | % susceptible by agent |
+   First isolate per patient per period. Repeat isolates excluded: <n>
+   Organisms suppressed below minimum isolate count (<n>): <list>
+
+3. PROGRAM PERFORMANCE
+   Flags raised: <n>   Accepted: <n> (<x>%)   Declined: <n>   Modified: <n>
+   Acceptance rate by rule: <table>
+   Median time from flag to intervention: <n> hours
+   IV-to-PO conversion rate: <x>%
+   Targeted-agent DOT trend vs pre-program baseline: <x>%
+   Facility CDI rate alongside high-risk agent DOT: <both series>
+
+4. RULE SET CHANGES PROPOSED
+   | Rule | Acceptance | Top decline reason | Proposal |
+
+5. LIMITATIONS
+   - <feeds with gaps in this period, and what they bias>
+
+Human Approval Required:
+Yes - Stewardship Pharmacist and Physician Lead before circulation.
+NHSN AUR submission is performed by a human. This package is preparation only.
+
+Audit Record:
+Generated - <audit_id>
+```
 ---
 
 ## Rules for all templates
