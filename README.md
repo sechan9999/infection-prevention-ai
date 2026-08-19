@@ -26,11 +26,31 @@ infection-prevention-ai/
 │       └── output_templates.md # fixed output shapes + audit record schema
 │
 └── agents/
-    └── infection-surveillance-agent/
-        ├── AGENT.md            # role, mission, data sources, boundaries
-        ├── workflow.md         # run modes, rule set, routing, feedback loop
-        └── tools.md            # tool contracts and their constraints
+    ├── infection-surveillance-agent/
+    │   ├── AGENT.md            # role, mission, data sources, boundaries
+    │   ├── workflow.md         # run modes, rule set, routing, feedback loop
+    │   └── tools.md            # tool contracts and their constraints
+    │
+    └── outbreak-detection-agent/
+        ├── AGENT.md            # triggers, agent chain position, boundaries
+        ├── workflow.md         # 12-step investigation, states, closure criteria
+        └── tools.md            # inherited + line list, epi curve, linkage, typing
 ```
+
+## The agent chain
+
+```
+Infection Surveillance Agent  --- cluster candidate --->  Outbreak Detection Agent
+        (is something here?)                                (what is it, how is it
+                                                             spreading, has it stopped?)
+                                        |
+                                        v
+                    Infection Preventionist / Infection Control Committee
+                              declare  ·  monitor  ·  close  ·  reject
+```
+
+Surveillance runs continuously and cheaply. Investigation is expensive and runs
+only on an accepted candidate or a human report. Neither agent decides anything.
 
 The skill is the reusable layer. Agents are thin: they declare a mission, a data
 scope, and a routing table, and inherit reasoning and safety from the skill.
@@ -60,6 +80,7 @@ Both files are plain Markdown with YAML frontmatter, so they load directly:
 mkdir -p ~/.claude/skills ~/.claude/agents
 cp -r skills/infection-prevention-fde ~/.claude/skills/
 cp agents/infection-surveillance-agent/AGENT.md ~/.claude/agents/infection-surveillance-agent.md
+cp agents/outbreak-detection-agent/AGENT.md ~/.claude/agents/outbreak-detection-agent.md
 ```
 
 Then invoke the skill by name, or ask a surveillance question and let the
@@ -72,12 +93,12 @@ is the non-negotiable prefix, and `output_templates.md` is the response schema.
 
 ## Roadmap
 
-**Phase 1 (this repo)**
+**Phase 1 - done**
 - Infection Prevention FDE Skill
 - Infection Surveillance Agent
 
-**Phase 2**
-- Outbreak Detection Agent
+**Phase 2 - in progress**
+- Outbreak Detection Agent (done)
 - Policy Compliance Agent
 - Antibiotic Stewardship Agent
 

@@ -181,6 +181,120 @@ Top item for review:
 - <single most important thing the IP should look at first>
 ```
 
+
+---
+
+## Template 7: Outbreak Investigation Packet
+
+```
+Investigation ID: OBK-<YYYY>-<nnn>
+State: open-suspected | open-confirmed | monitoring | closed | rejected
+Opened: <date>   Last updated: <datetime>   Detection latency: <n> days
+
+1. CASE DEFINITION (version <n>, set <date>)
+   Person: <...>
+   Place: <...>
+   Time: <...>
+   Lab/clinical criteria: <...>
+   Counts under this version: confirmed <n> | probable <n> | suspect <n>
+
+2. OUTBREAK EXISTENCE
+   Observed: <n> in <window>
+   Expected: <n> (basis: <trailing baseline / prior year / facility rate>)
+   Denominator: <patient days / procedures / census>
+
+3. LINE LIST
+   <table, de-identified case ids, per workflow.md Step 4>
+   Changes since last packet: +<n> new, <n> reclassified
+
+4. DESCRIPTIVE EPIDEMIOLOGY
+   Person: <...>
+   Place: <room/bed map summary, shared equipment and rooms>
+   Time: <epidemic curve; bin width; cases using fallback dates: <n>>
+   Compatible pattern (hypothesis): <point source | propagated | continuous
+   common source | mixed>
+
+5. HYPOTHESES (ranked)
+   H1: <transmission route>
+       Supports: <evidence>
+       Contradicts: <evidence>
+       Cases explained: <n> of <n>
+       Status: unverified | log-verified | tested
+   H2: ...
+
+6. HYPOTHESIS TESTING
+   Design: <cohort | case-control | descriptive only>
+   Exposures declared in advance: <list>
+   Results: <all exposures, with point estimate and CI>
+   Power: <statement; underpowered if applicable>
+
+7. LABORATORY AND ENVIRONMENTAL
+   Typing: <status | laboratory interpretation verbatim | source>
+   Facility logs reviewed: <water / air / reprocessing / construction>
+   Contradicting findings: <stated explicitly, or "none">
+
+8. CONTROL MEASURE OPTIONS
+   | Option | Tier | Evidence | Operational cost | Reversible |
+   <one row per option; no single recommended course for unit closure,
+    admission holds, procedure cancellation, or staff restriction>
+
+9. OPEN QUESTIONS / MISSING DATA
+   - <field or feed, and what it would resolve>
+
+Risk Level: Low | Medium | High
+Confidence: <0-100>% (<basis>)
+
+Human Approval Required:
+Yes - Infection Preventionist (and Infection Control Committee for any state
+change or control measure)
+
+Proposed state change: <none | to <state>>
+
+Audit Record:
+Generated - <audit_id>
+```
+
+---
+
+## Template 8: Outbreak Closure Summary
+
+```
+Investigation ID: OBK-<YYYY>-<nnn>
+Period: <first onset> to <last onset>
+Final counts: confirmed <n> | probable <n> | suspect <n>
+Organism: <species, susceptibility / typing summary>
+Units involved: <...>
+
+WHAT HAPPENED
+<3-5 sentences, plain language, no jargon>
+
+MOST SUPPORTED HYPOTHESIS
+<hypothesis>
+Supporting evidence: <...>
+Evidence never resolved: <...>
+Alternative hypotheses not excluded: <...>
+
+CONTROL MEASURES APPLIED
+| Measure | Applied date | Verified date | Verified by |
+
+CLOSURE CRITERIA
+- No new confirmed case since <date> (<n> incubation periods: yes/no)
+- Control measures verified: yes/no
+- Contact screening complete: yes/no
+- Corrective actions closed: yes/no
+
+DETECTION PERFORMANCE
+Trigger that surfaced the event: <rule id | human report>
+First onset to investigation open: <n> days
+Rule outcome: true positive | missed (rule change proposed: <id>)
+Pseudo-outbreak: yes/no (<cause>)
+
+LESSONS AND PROPOSED CHANGES
+- <change, owner, proposed to IP on <date>>
+
+Closed by: <name, role>   Date: <date>
+Audit Record: Generated - <audit_id>
+```
 ---
 
 ## Rules for all templates
