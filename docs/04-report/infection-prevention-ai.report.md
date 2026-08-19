@@ -322,7 +322,7 @@ Cycle #1 closes with no open findings.
 | 250d453 | feat: add policy compliance agent, completing Phase 2 |
 | 6865e3e | feat: add FDE deployment agent, completing Phase 3 |
 | 0c6a267 | docs: PDCA completion report for cycle #1 |
-| (this)  | fix: resolve G-01, G-02, G-03 from the completion report |
+| 73014de | fix: resolve G-01, G-02, G-03 from the completion report |
 
 ---
 
