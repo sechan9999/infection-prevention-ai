@@ -376,6 +376,55 @@ NHSN AUR submission is performed by a human. This package is preparation only.
 Audit Record:
 Generated - <audit_id>
 ```
+
+---
+
+## Template 11: Survey Readiness Snapshot
+
+```
+Prepared: <date>   Scope: <facility | division>
+This is an internal gap view. It is not a compliance score, not an attestation,
+and not a surveyor-facing document.
+
+--- BY DOMAIN ---
+| Domain | Requirements | Evidence coverage | Open findings (H/M/L) | Open CAs | Oldest CA |
+| Hand hygiene            | <n> | <n>/<n> | 1/3/2 | 4 | 62d |
+| Isolation precautions   | ... |
+| Reprocessing            | ... |
+| Water management        | ... |
+| Staff immunization      | ... |
+| Policy currency         | ... |
+
+--- THINNEST EVIDENCE ---
+Requirements with no monitoring method or no evidence location:
+- <requirement_id> | <domain> | owner: <role | NONE>
+
+--- OPEN FINDINGS BY RISK ---
+High:
+- <finding_id> | <requirement, cited source + version> | <gap class> | owner <role>
+  Evidence: <what the data shows>
+  Corrective action: <state>, age <n>d, due <date>
+
+--- RECURRENCE ---
+Findings that returned after a verified closure:
+- <finding_id> | closed <date> | recurred <date> | prior action: <what was done>
+
+--- PRIOR SURVEY FINDINGS ---
+| Finding | Cycle | Corrective action | Recurred? |
+
+--- DEADLINES IN WINDOW ---
+| Item | Source | Due | Days left | Status | Owner role |
+
+--- SUPPRESSED ---
+<n> breakdowns withheld: group size below minimum (<n>)
+
+Human Approval Required:
+Yes - Infection Preventionist and Quality. Compliance conclusions are reached by
+the Infection Control Committee, not by this snapshot.
+
+Audit Record:
+Generated - <audit_id>
+```
 ---
 
 ## Rules for all templates
@@ -385,3 +434,4 @@ Generated - <audit_id>
   confirmed NHSN events.
 - Patient identifiers are de-identified keys in every template.
 - No template ever contains a diagnosis, an order, or a therapy recommendation.
+- No template ever contains a staff name or an individual performance finding.

@@ -36,33 +36,44 @@ infection-prevention-ai/
     │   ├── workflow.md         # 12-step investigation, states, closure criteria
     │   └── tools.md            # inherited + line list, epi curve, linkage, typing
     │
-    └── antibiotic-stewardship-agent/
-        ├── AGENT.md            # 14 flag types, program context, the hard line
-        ├── workflow.md         # worklist assembly, ranking, AU/AR tracking
-        └── tools.md            # inherited + worklist, bug-drug, utilization, antibiogram
+    ├── antibiotic-stewardship-agent/
+    │   ├── AGENT.md            # 14 flag types, program context, the hard line
+    │   ├── workflow.md         # worklist assembly, ranking, AU/AR tracking
+    │   └── tools.md            # inherited + worklist, bug-drug, utilization, antibiogram
+    │
+    └── policy-compliance-agent/
+        ├── AGENT.md            # 14 domains, the non-punitive constraint
+        ├── workflow.md         # requirement register, gap classes, CA tracking
+        └── tools.md            # inherited + register, verification, CA tracker, deadlines
 ```
 
 ## The agent chain
 
 ```
-Infection Surveillance Agent  --- cluster candidate --->  Outbreak Detection Agent
-        (is something here?)                                (what is it, how is it
-                |                                            spreading, has it stopped?)
-                | CDI signal, resistant organism                    |
-                v                                                   v
-     Antibiotic Stewardship Agent          Infection Preventionist / Infection
-        (is this therapy still                    Control Committee
-         the right therapy to ask about?)   declare · monitor · close · reject
-                |
-                v
-     Stewardship Pharmacist / Physician Lead
-        accept · decline · modify
+                     Infection Prevention FDE Skill
+      evidence first · human in the loop · auditability · safety rules
+                                 |
+     +-------------+-------------+-------------+-------------+
+     |             |                           |             |
+ Surveillance      Outbreak              Stewardship     Policy Compliance
+ "is something     "what is it, how      "is this        "does practice
+  here?"            is it spreading,      therapy still   match policy and
+     |              has it stopped?"      the right one   regulation?"
+     |                   |                to ask about?"        |
+     |  cluster          |                      |               |
+     +----candidate----->|                      |               |
+     |                   |                      |               |
+     v                   v                      v               v
+ Infection          IP / Infection         Stewardship      IP / Quality /
+ Preventionist      Control Committee      Pharmacist +     Infection Control
+ adjudicates        declare · monitor      Physician Lead   Committee
+ the line list      close · reject         accept · decline reach the conclusion
 ```
 
-Surveillance runs continuously and cheaply. Investigation is expensive and opens
-only on an accepted candidate or a human report. Stewardship runs daily against
-every patient on an antimicrobial. None of the three decides anything - each one
-terminates at a named human role.
+Surveillance runs continuously and cheaply. Investigation opens only on an
+accepted candidate or a human report. Stewardship runs daily against every
+patient on an antimicrobial. Compliance runs against the requirement register.
+None of the four decides anything - each one terminates at a named human role.
 
 The skill is the reusable layer. Agents are thin: they declare a mission, a data
 scope, and a routing table, and inherit reasoning and safety from the skill.
@@ -94,6 +105,7 @@ cp -r skills/infection-prevention-fde ~/.claude/skills/
 cp agents/infection-surveillance-agent/AGENT.md ~/.claude/agents/infection-surveillance-agent.md
 cp agents/outbreak-detection-agent/AGENT.md ~/.claude/agents/outbreak-detection-agent.md
 cp agents/antibiotic-stewardship-agent/AGENT.md ~/.claude/agents/antibiotic-stewardship-agent.md
+cp agents/policy-compliance-agent/AGENT.md ~/.claude/agents/policy-compliance-agent.md
 ```
 
 Then invoke the skill by name, or ask a surveillance question and let the
@@ -110,9 +122,9 @@ is the non-negotiable prefix, and `output_templates.md` is the response schema.
 - Infection Prevention FDE Skill
 - Infection Surveillance Agent
 
-**Phase 2 - in progress**
-- Outbreak Detection Agent (done)
-- Antibiotic Stewardship Agent (done)
+**Phase 2 - done**
+- Outbreak Detection Agent
+- Antibiotic Stewardship Agent
 - Policy Compliance Agent
 
 **Phase 3**
