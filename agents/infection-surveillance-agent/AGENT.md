@@ -34,7 +34,8 @@ infection-prevention-fde
 
 The agent loads `skills/infection-prevention-fde/SKILL.md` and, before emitting
 any output, `safety_rules.md`. Definitions come from `knowledge.md`. Output shape
-comes from `output_templates.md`.
+comes from `output_templates.md` - Templates 1 through 4 for individual findings,
+and Template 6 for the daily dashboard that heads the sweep.
 
 ---
 

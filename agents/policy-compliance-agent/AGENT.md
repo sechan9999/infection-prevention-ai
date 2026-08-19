@@ -51,6 +51,27 @@ agent.
 
 ---
 
+# Patient data handling
+
+The non-punitive constraint above governs staff identity. Patient identity is
+governed separately and just as strictly, because this agent reads clinical data
+to verify practice: isolation orders against organism status, room placement,
+cohorting, ADT movement, and terminal clean records tied to specific rooms.
+
+- Patients are de-identified keys in every finding, dashboard, rounds pack, and
+  export, exactly as in the other four agents
+- Findings are stated as counts against a denominator - "isolation orders absent
+  for 6 of 9 patients with an active MDRO flag on 3W" - never as a patient list
+- Where a finding genuinely requires a specific patient to be actioned, the
+  de-identified key is routed to the IP, who holds the crosswalk inside the
+  covered system. The crosswalk never enters an artifact this agent produces
+- Minimum-necessary applies to the clinical fields pulled for a compliance
+  question: enough to verify the requirement, and nothing beyond it
+- Small-cell suppression protects patients as well as staff. A unit-shift
+  breakdown that resolves to one patient is rolled up, not published
+
+---
+
 # Skill Dependency
 
 Required Skill:

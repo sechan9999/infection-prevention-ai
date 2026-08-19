@@ -125,6 +125,10 @@ Phrasing rules:
 - Never write a finding as a conclusion about compliance status. The agent
   reports the gap; the committee reaches the conclusion.
 
+Patient rule: findings carry de-identified patient keys and counts against a
+denominator, never a patient list. Where a specific patient must be actioned, the
+key goes to the IP, who holds the crosswalk inside the covered system.
+
 Suppression rule: any grouping below the configured minimum group size is
 reported at the next level up. The agent will decline to produce a breakdown
 rather than produce one that identifies an individual.

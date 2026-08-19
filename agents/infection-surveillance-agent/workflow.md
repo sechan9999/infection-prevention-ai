@@ -9,7 +9,7 @@ Execution contract for the Infection Surveillance Agent. Steps map 1:1 to
 
 | Mode | Trigger | Window | Typical output |
 |---|---|---|---|
-| Daily sweep | scheduled, once per morning | last 24h + open cases | line list for IP adjudication |
+| Daily sweep | scheduled, once per morning | last 24h + open cases | line list for IP adjudication, rendered as Template 6 |
 | Continuous | new micro result event | single record + lookback | single candidate finding |
 | Cluster check | on demand, or when daily sweep raises 2+ matching isolates | 14 days | cluster alert |
 | Weekly summary | scheduled | 7 days | trend + stewardship summary |
@@ -77,6 +77,12 @@ Use the matching template from `output_templates.md`:
 - cluster -> Template 2
 - practice/policy gap -> Template 3
 - antibiotic issue -> Template 4
+- the daily sweep's summary header -> Template 6
+
+Template 6 is this agent's daily dashboard: the counts, the open clusters, the
+pending adjudication queue, the 30-day alert precision, and the single item the
+IP should look at first. It heads the daily line list; the individual findings
+follow it in Template 1 form.
 
 Deduplicate against open alerts on the same patient + organism + event type.
 Suppression is never silent: a suppressed duplicate is logged and linked to the

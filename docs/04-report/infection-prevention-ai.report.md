@@ -1,6 +1,6 @@
 # infection-prevention-ai Completion Report
 
-> **Status**: Complete (Phases 1-3), with 3 open findings carried forward
+> **Status**: Complete (Phases 1-3) - all 3 findings resolved 2026-08-19
 >
 > **Project**: infection-prevention-ai
 > **Version**: 0.1.0
@@ -31,8 +31,8 @@
 +---------------------------------------------+
 |  Complete:      1 skill + 5 agents          |
 |  Templates:     13 output contracts         |
-|  Files:         14 markdown, 3,675 lines    |
-|  Open findings: 3 (all minor, none blocking)|
+|  Files:         14 markdown, 3,716 lines    |
+|  Open findings: 0 (3 raised, 3 resolved)    |
 +---------------------------------------------+
 ```
 
@@ -84,8 +84,8 @@ against - noted as a process observation in Section 7.
 | FR-06 | FDE Deployment Agent | Complete | 4 tiers, 6 rollout stages, capability manifest |
 | FR-07 | Output contract library | Complete | 13 templates incl. machine-readable audit record |
 | FR-08 | Portfolio registration | Complete | Project 09 on ai-ml-delivery-playbook, EN/KO |
-| FR-09 | Infection Report Agent | Not built | Listed in SKILL.md roster, out of Phase 1-3 scope |
-| FR-10 | Infection Education Agent | Not built | Listed in SKILL.md roster, out of Phase 1-3 scope |
+| FR-09 | Infection Report Agent | Not built | Marked *planned* in the SKILL.md roster (G-03 fix) |
+| FR-10 | Infection Education Agent | Not built | Marked *planned* in the SKILL.md roster (G-03 fix) |
 
 ### 3.2 Non-Functional Requirements
 
@@ -97,20 +97,20 @@ against - noted as a process observation in Section 7.
 | Every guideline claim is cited or withheld | all | `guideline_unavailable` in 5/5 tools.md | Pass |
 | No output contains a diagnosis, order, or therapy recommendation | all | enforced in template rules | Pass |
 | No output contains a staff name or individual performance finding | all | enforced in template rules | Pass |
-| PHI de-identification stated per agent | 5/5 | 4/5 | **Gap G-02** |
+| PHI de-identification stated per agent | 5/5 | 5/5 | Pass (G-02 resolved) |
 
 ### 3.3 Deliverables by location
 
 | Deliverable | Location | Lines |
 |-------------|----------|-------|
-| Skill | `skills/infection-prevention-fde/` | 993 |
-| Surveillance agent | `agents/infection-surveillance-agent/` | 387 |
+| Skill | `skills/infection-prevention-fde/` | 999 |
+| Surveillance agent | `agents/infection-surveillance-agent/` | 394 |
 | Outbreak agent | `agents/outbreak-detection-agent/` | 548 |
 | Stewardship agent | `agents/antibiotic-stewardship-agent/` | 490 |
-| Compliance agent | `agents/policy-compliance-agent/` | 522 |
+| Compliance agent | `agents/policy-compliance-agent/` | 550 |
 | Deployment agent | `agents/fde-deployment-agent/` | 566 |
 | README | `README.md` | 169 |
-| **Total** | 14 files | **3,675** |
+| **Total** | 14 files | **3,716** |
 
 ---
 
@@ -120,9 +120,6 @@ against - noted as a process observation in Section 7.
 
 | Item | Reason | Priority | Est. effort |
 |------|--------|----------|-------------|
-| G-01 Template 6 orphaned | Defined in the skill, referenced by no agent | Low | 15 min |
-| G-02 Compliance agent PHI statement | Missing an explicit de-identification clause | Medium | 15 min |
-| G-03 Skill roster vs built agents | SKILL.md lists 7 agent types, 5 exist | Low | 15 min |
 | Infection Report Agent | Out of Phase 1-3 scope | Medium | 1 session |
 | Infection Education Agent | Out of Phase 1-3 scope | Low | 1 session |
 | Worked example per agent | Would make the contracts concrete for a reader | Medium | 1 session |
@@ -157,28 +154,33 @@ analysis - see Section 1.3.
 | C3 | Every agent declares `skill: infection-prevention-fde` | 5/5 | Pass |
 | C4 | Every AGENT.md binds `safety_rules.md` | 5/5 | Pass |
 | C5 | Every agent has an explicit boundary/refusal section | 5/5 (11 sections total) | Pass |
-| C6 | Every defined template is produced by some agent | 12/13 | **G-01** |
+| C6 | Every defined template is produced by some agent | 13/13 | Pass |
 | C7 | Every rule carries a versioned id | 21 rule ids | Pass |
-| C8 | SKILL.md agent roster matches what exists | 5 of 7 built | **G-03** |
+| C8 | SKILL.md agent roster separates built from planned | built/planned split present | Pass |
 | C9 | Agents reference `knowledge.md` for definitions | 4/5 (1 by design) | Pass |
 | C10 | Every tools.md enforces the cite-or-withhold contract | 5/5 | Pass |
-| C11 | Every agent states patient de-identification | 4/5 | **G-02** |
+| C11 | Every agent states patient de-identification | 5/5 | Pass |
 
-**Agent-level conformance: 38 / 40 assertions = 95.0%**
+**Agent-level conformance: 40 / 40 assertions = 100%** (was 38/40 = 95.0% at
+first pass; the three findings below were raised, fixed, and the full C1-C11
+suite re-run clean on 2026-08-19)
 
 C9's single miss is intentional and not counted as a gap: the FDE Deployment
 Agent performs no clinical reasoning, so it has no reason to load clinical
 surveillance definitions.
 
-### 5.2 Findings raised
+### 5.2 Findings raised and resolved
 
-| ID | Finding | Severity | Detail |
-|----|---------|----------|--------|
-| G-01 | Template 6 (Daily Dashboard Summary) is defined in `output_templates.md` but no agent references it | Low | Either the surveillance agent should own it as its daily line-list rendering, or it should be removed. An orphaned contract rots. |
-| G-02 | `policy-compliance-agent` has no explicit patient de-identification statement in any of its three files | Medium | It queries isolation orders, room placement, and ADT - patient-adjacent data. Its non-punitive constraint covers *staff* identity thoroughly, but the *patient* PHI clause present in the other four agents was not carried over. The skill-level `safety_rules.md` covers it globally, so this is a completeness gap rather than an exposure. |
-| G-03 | `SKILL.md` lists 7 supported agent types; 5 are built | Low | Infection Report Agent and Infection Education Agent are named but unbuilt. Either mark them as planned in the roster or drop them, so a reader does not expect them in the repo. |
+All three were raised by the C1-C11 suite on 2026-08-19 and fixed the same day.
 
-No high-severity or blocking findings. No finding affects the safety contracts.
+| ID | Finding | Severity | Resolution | Status |
+|----|---------|----------|------------|--------|
+| G-01 | Template 6 (Daily Dashboard Summary) was defined in `output_templates.md` but referenced by no agent | Low | Assigned to the Infection Surveillance Agent: named in its skill-dependency contract, listed in Step 4's template selection, and declared as the daily sweep's output in the run-modes table. It now heads the daily line list, with individual findings following in Template 1 form. | Resolved |
+| G-02 | `policy-compliance-agent` carried no patient de-identification clause | Medium | Added a **Patient data handling** section to its AGENT.md, distinct from the staff-focused non-punitive constraint: de-identified keys in every artifact, findings as counts against a denominator rather than patient lists, crosswalk held by the IP inside the covered system, minimum-necessary clinical fields, and small-cell suppression stated to protect patients as well as staff. Mirrored into the Data Query, Analytics, and Reporting tool constraints and into the workflow's finding-emission rules. | Resolved |
+| G-03 | `SKILL.md` listed 7 agent types without distinguishing built from planned | Low | Roster split into "Built and in this repository" (5, each with its directory path) and "Planned, not yet built" (2, each with its intended scope), plus an explicit line that a planned agent is a roster entry and not a capability. | Resolved |
+
+No high-severity or blocking findings were raised, and none of the three
+affected the safety contracts. Zero findings remain open.
 
 ### 5.3 What was verified, and what was not
 
@@ -229,7 +231,8 @@ HTML validity of the portfolio card, bilingual span balance on the portfolio pag
   in with realistic data. A reader has to simulate the agent mentally to judge it.
 - **Templates accumulated without a coverage check.** Template 6 was orphaned for
   four commits before this report's C6 check caught it. The check should have
-  existed from commit 1.
+  existed from commit 1. It now exists, but only as commands recorded in this
+  report - automating it remains open (Section 6.3).
 - **The design document is the deliverable.** Spec-first was the right shape here,
   but it means there is no independent artifact to diff against, and conformance
   had to be defined retroactively in this report.
@@ -272,9 +275,12 @@ HTML validity of the portfolio card, bilingual span balance on the portfolio pag
 
 ### 8.1 Immediate (this cycle's leftovers)
 
-- [ ] G-01: assign Template 6 to the surveillance agent, or remove it
-- [ ] G-02: add the patient de-identification clause to the compliance agent
-- [ ] G-03: mark the two unbuilt agent types as planned in `SKILL.md`
+- [x] G-01: Template 6 assigned to the surveillance agent
+- [x] G-02: patient de-identification clause added to the compliance agent
+- [x] G-03: `SKILL.md` roster split into built and planned
+- [x] C1-C11 suite re-run clean (40/40) after the fixes
+
+Cycle #1 closes with no open findings.
 
 ### 8.2 Next PDCA cycle
 
@@ -301,6 +307,11 @@ HTML validity of the portfolio card, bilingual span balance on the portfolio pag
 - FDE Deployment Agent: site profiling, capability manifest, shadow validation, staged rollout
 - Registered as project 09 on the ai-ml-delivery-playbook portfolio (EN/KO)
 
+**Fixed:**
+- G-01: Template 6 assigned to the Infection Surveillance Agent
+- G-02: patient data handling section added to the Policy Compliance Agent
+- G-03: SKILL.md roster separated into built and planned agents
+
 **Commits:**
 
 | SHA | Message |
@@ -310,6 +321,8 @@ HTML validity of the portfolio card, bilingual span balance on the portfolio pag
 | 7ce1482 | feat: add antibiotic stewardship agent (Phase 2) |
 | 250d453 | feat: add policy compliance agent, completing Phase 2 |
 | 6865e3e | feat: add FDE deployment agent, completing Phase 3 |
+| 0c6a267 | docs: PDCA completion report for cycle #1 |
+| (this)  | fix: resolve G-01, G-02, G-03 from the completion report |
 
 ---
 
@@ -317,7 +330,8 @@ HTML validity of the portfolio card, bilingual span balance on the portfolio pag
 
 Three phases delivered in one session: a reusable skill, four operational agents,
 and a deployment agent that configures them for a specific hospital. Structural
-conformance is 95 percent with three minor findings, none affecting the safety
+conformance finished at 100 percent (40/40) after the three findings raised by
+the first pass were fixed and the suite re-run. None of them touched the safety
 contracts.
 
 The honest limit of this deliverable: it is an architecture, not a running
@@ -339,3 +353,4 @@ agent itself specifies.
 | Version | Date | Changes | Author |
 |---------|------|---------|--------|
 | 1.0 | 2026-08-19 | Completion report created for PDCA cycle #1 | Gyver |
+| 1.1 | 2026-08-19 | G-01/G-02/G-03 resolved; conformance re-run 40/40; cycle #1 closed | Gyver |

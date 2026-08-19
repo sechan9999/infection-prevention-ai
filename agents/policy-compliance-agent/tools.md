@@ -13,6 +13,9 @@ training and immunization records, and the policy library.
 
 Constraints specific to this agent:
 
+- Patient records are retrieved de-identified, minimum-necessary, with PHI hashed
+  at the boundary - the same contract as the other four agents. Clinical fields
+  are pulled only to verify a requirement, never for clinical analysis.
 - Staff-linked records (training, fit test, immunization) are retrieved as
   aggregate counts by role and unit. Individual records are never returned to the
   agent's reasoning context - only completion rates and expiry counts.
@@ -45,16 +48,16 @@ Adds compliance rates with observation counts, trend against target, recurrence
 detection, and corrective action aging.
 
 Constraints: numerator and denominator always shown; groupings below the minimum
-group size suppressed and rolled up; observed rates always labeled with observer
-type and coverage.
+group size suppressed and rolled up - which protects patients as well as staff;
+observed rates always labeled with observer type and coverage.
 
 ---
 
 ## Inherited: Reporting Tool
 
 Renders rounds packs, domain reviews, deadline status, and the readiness
-snapshot. Drafts only, no external transmission, no staff names, no compliance
-score.
+snapshot. Drafts only, no external transmission, no staff names, de-identified
+patient keys throughout, no compliance score.
 
 ---
 

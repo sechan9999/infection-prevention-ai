@@ -142,21 +142,27 @@ Detailed domain content: see `knowledge.md`.
 
 # Supported Agent Types
 
-This skill can power:
+Built and in this repository:
 
-1. Infection Surveillance Agent
+1. Infection Surveillance Agent - `agents/infection-surveillance-agent/`
 
-2. Outbreak Detection Agent
+2. Outbreak Detection Agent - `agents/outbreak-detection-agent/`
 
-3. Policy Compliance Agent
+3. Antibiotic Stewardship Agent - `agents/antibiotic-stewardship-agent/`
 
-4. Antibiotic Stewardship Agent
+4. Policy Compliance Agent - `agents/policy-compliance-agent/`
 
-5. Infection Report Agent
+5. FDE Deployment Agent - `agents/fde-deployment-agent/`
 
-6. Infection Education Agent
+Planned, not yet built:
 
-7. FDE Deployment Agent
+6. Infection Report Agent - committee and regulatory reporting packages
+
+7. Infection Education Agent - targeted staff education from finding patterns
+
+A planned agent is a roster entry, not a capability. Anything relying on this
+skill should treat items 6 and 7 as absent until they exist as an agent
+directory with the AGENT/workflow/tools triple.
 
 ---
 
