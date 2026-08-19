@@ -425,6 +425,124 @@ the Infection Control Committee, not by this snapshot.
 Audit Record:
 Generated - <audit_id>
 ```
+
+---
+
+## Template 12: Site Profile and Capability Manifest
+
+```
+Site: <site_id>   Beds: <n>   Assessed: <date>   Tier: T0 | T1 | T2 | T3
+
+--- SYSTEMS ---
+| System | Vendor / version | Owner | Stated or Verified |
+
+--- INTEGRATION SURFACE ---
+Available: <HL7 v2 message types | FHIR version + resources | flat file | API>
+Interface engine owner: <role>   Change lead time: <n> weeks
+Test environment: <yes/no>   Historical data depth: <n> months
+
+--- DATA AVAILABILITY MATRIX ---
+| Feed | Present | Latency | Completeness | Structured? | Known defects | Owner |
+| Micro results        | yes | 2h   | 98% | yes | ... | Lab IT |
+| Device flowsheet     | no  | -    | -   | -   | not captured discretely | - |
+| Documented indication| partial | - | 31% | free text | in progress notes | - |
+
+--- PEOPLE ---
+IP FTE: <n> (coverage <hours>)   Stewardship pharmacist FTE: <n>
+ICC cadence: <...>   After-hours path: <...>
+
+--- WORKFLOW ---
+Current surveillance method: <...>   IP hours/week on case finding: <n>
+How alerts reach the IP today: <...>
+
+--- GOVERNANCE (recorded, not adjudicated) ---
+BAA status: <...>   PHI boundary: <...>   Hosting: <on-prem | private cloud>
+Audit retention required: <n> years   Security review: <process, owner>
+For the hospital privacy officer, counsel, and security team to rule on.
+
+--- BASELINE (captured <date>, before any output shown) ---
+Detection latency: <n> days   HAI counts by type: <...>
+Antibiotic DOT/1000 days present: <n>   Compliance rates: <...>
+IP hours/week on case finding: <n>
+
+--- CAPABILITY MANIFEST ---
+Enabled (<n>):
+| Rule | Agent | Feeds used |
+Degraded-explicit (<n>):
+| Rule | Reduction | Label printed on every output |
+Disabled - missing feed (<n>):
+| Rule | Missing feed | What would enable it |
+Disabled - quality (<n>):
+| Rule | Feed | Defect | Quality floor |
+Deferred by choice (<n>):
+| Rule | Enable at stage |
+
+Honest summary: this site can run <n> of <n> rules today.
+
+--- UNKNOWNS ---
+| Dimension | Question | Owner | Due |
+
+Human Approval Required:
+Yes - Infection Preventionist confirms profile accuracy before configuration.
+
+Audit Record:
+Generated - <audit_id>
+```
+
+---
+
+## Template 13: Deployment Plan and Go-Live Gate
+
+```
+Site: <site_id>   Agent: <which of the four>   Stage: 0-5   Plan version: <v>
+
+--- CONFIG SUMMARY ---
+Config version: <v>   Approved by: <role, name, date>
+Alert budget: <n>/day for <role>   Enabled rules within budget: yes/no
+Thresholds without rationale: <n>  (must be 0 to proceed)
+Values inherited from a peer site still marked unreviewed: <n>  (must be 0)
+
+--- GATES AGREED BEFORE VALIDATION ---
+Recorded: <datetime>   By: <role, name>
+| Measure | Gate | Result | Pass? |
+| Unexplained missed events | 0 | <n> | |
+| PPV on raised candidates | >= <x>% | <x>% | |
+| Daily volume | <= budget | <n> | |
+| Detection latency vs baseline | earlier or equal | <n> days | |
+
+--- VALIDATION RESULT ---
+Retrospective window: <dates>   Adjudicated truth set: <n> events
+Sensitivity: <x>%   PPV: <x>%   Latency delta: <n> days earlier
+Miss list:
+| Event | Classification (feed / threshold / rule gap / data quality) | Remediation | Accepted by |
+
+Prospective shadow: <dates>, outputs sealed
+Agent found: <n>   IP found independently: <n>   Overlap: <n>
+
+--- ROLLOUT ---
+| Stage | Entry gate | Passed by | Date |
+Scope at go-live: <unit / service / facility>
+Named owner: <individual, role>            (required for stage 4)
+Kill switch: <how, who may, tested on <date>>   (required for stage 4)
+Fallback process: <what the team reverts to>
+
+--- KNOWN GAPS CARRIED FORWARD ---
+Disabled rules: <n>   (from Template 12; reviewed at every checkpoint)
+
+--- POST-DEPLOYMENT CHECKPOINTS ---
+| Day | Detection latency | IP hours reclaimed | Precision | Rules retired | Rules enabled |
+| 30  | | | | | |
+| 90  | | | | | |
+| 180 | | | | | |
+Reported against this site's baseline. No-change and negative results included.
+
+Human Approval Required:
+Yes - stage advancement is a human decision. This agent prepares gates; it does
+not pass them.
+
+Audit Record:
+Generated - <audit_id>
+```
 ---
 
 ## Rules for all templates

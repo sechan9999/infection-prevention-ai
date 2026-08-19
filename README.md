@@ -41,15 +41,30 @@ infection-prevention-ai/
     │   ├── workflow.md         # worklist assembly, ranking, AU/AR tracking
     │   └── tools.md            # inherited + worklist, bug-drug, utilization, antibiogram
     │
-    └── policy-compliance-agent/
-        ├── AGENT.md            # 14 domains, the non-punitive constraint
-        ├── workflow.md         # requirement register, gap classes, CA tracking
-        └── tools.md            # inherited + register, verification, CA tracker, deadlines
+    ├── policy-compliance-agent/
+    │   ├── AGENT.md            # 14 domains, the non-punitive constraint
+    │   ├── workflow.md         # requirement register, gap classes, CA tracking
+    │   └── tools.md            # inherited + register, verification, CA tracker, deadlines
+    │
+    └── fde-deployment-agent/
+        ├── AGENT.md            # site profile dimensions, tiers, rollout stages
+        ├── workflow.md         # discovery, manifest, baseline, shadow, handover
+        └── tools.md            # profiler, manifest, config builder, harness, tracker
 ```
+
+The first four agents run the hospital's infection prevention work. The fifth
+configures them for a specific hospital and proves they work there before anyone
+depends on them.
 
 ## The agent chain
 
 ```
+                FDE Deployment Agent
+   profiles the site · computes the capability manifest
+   validates in shadow · stages the rollout to a named owner
+                         |
+                    configures
+                         v
                      Infection Prevention FDE Skill
       evidence first · human in the loop · auditability · safety rules
                                  |
@@ -89,6 +104,11 @@ scope, and a routing table, and inherit reasoning and safety from the skill.
 | Auditability | Every finding writes an immutable JSON audit record |
 | Hospital customization | Rules and thresholds are configuration, not code |
 
+Capability is derived from data, never assumed. A rule whose required feeds are
+unavailable at a site is disabled and shown as disabled - never silently degraded
+into a version that runs on partial data. A hospital that can support 9 of 34
+rules gets 9 rules and an honest list of the 25 it does not have.
+
 Hard limits, enforced in `safety_rules.md`: no diagnosis, no prescribing, no
 treatment changes, no clinician override, no hidden uncertainty, no PHI leaving
 the covered environment, no autonomous submission to any registry.
@@ -106,6 +126,7 @@ cp agents/infection-surveillance-agent/AGENT.md ~/.claude/agents/infection-surve
 cp agents/outbreak-detection-agent/AGENT.md ~/.claude/agents/outbreak-detection-agent.md
 cp agents/antibiotic-stewardship-agent/AGENT.md ~/.claude/agents/antibiotic-stewardship-agent.md
 cp agents/policy-compliance-agent/AGENT.md ~/.claude/agents/policy-compliance-agent.md
+cp agents/fde-deployment-agent/AGENT.md ~/.claude/agents/fde-deployment-agent.md
 ```
 
 Then invoke the skill by name, or ask a surveillance question and let the
@@ -127,9 +148,10 @@ is the non-negotiable prefix, and `output_templates.md` is the response schema.
 - Antibiotic Stewardship Agent
 - Policy Compliance Agent
 
-**Phase 3**
+**Phase 3 - done**
 - FDE Deployment Agent: profiles a hospital's EHR, workflow, and staffing, then
-  configures and deploys the IP-OS stack for that specific environment
+  configures the stack for that environment, validates it in shadow mode against
+  the IP's own adjudication, and stages the rollout to a named owner
 
 ---
 
