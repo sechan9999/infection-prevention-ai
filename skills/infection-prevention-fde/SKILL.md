@@ -154,9 +154,9 @@ Built and in this repository:
 
 5. FDE Deployment Agent - `agents/fde-deployment-agent/`
 
-Planned, not yet built:
+6. Infection Report Agent - `agents/infection-report-agent/`
 
-6. Infection Report Agent - committee and regulatory reporting packages
+Planned, not yet built:
 
 7. Infection Education Agent - targeted staff education from finding patterns
 

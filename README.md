@@ -46,15 +46,21 @@ infection-prevention-ai/
     │   ├── workflow.md         # requirement register, gap classes, CA tracking
     │   └── tools.md            # inherited + register, verification, CA tracker, deadlines
     │
+    ├── infection-report-agent/
+    │   ├── AGENT.md            # report catalogue, one-number discipline
+    │   ├── workflow.md         # snapshot, reconcile, restate, submission prep
+    │   └── tools.md            # snapshot, reconciliation, denominators, restatement
+    │
     └── fde-deployment-agent/
         ├── AGENT.md            # site profile dimensions, tiers, rollout stages
         ├── workflow.md         # discovery, manifest, baseline, shadow, handover
         └── tools.md            # profiler, manifest, config builder, harness, tracker
 ```
 
-The first four agents run the hospital's infection prevention work. The fifth
-configures them for a specific hospital and proves they work there before anyone
-depends on them.
+Four agents run the hospital's infection prevention work. The report agent turns
+what they adjudicated into the documents the committee, the board, and the
+regulator receive. The deployment agent configures all of them for a specific
+hospital and proves they work there before anyone depends on them.
 
 ## The agent chain
 
@@ -83,12 +89,24 @@ depends on them.
  Preventionist      Control Committee      Pharmacist +     Infection Control
  adjudicates        declare · monitor      Physician Lead   Committee
  the line list      close · reject         accept · decline reach the conclusion
+     |                   |                      |               |
+     +---------+---------+----------+-----------+---------------+
+                         |
+              adjudicated audit records
+                         v
+               Infection Report Agent
+   one snapshot | one number for every audience | restates, never rewrites
+                         |
+                         v
+      ICC | Board | Units | NHSN package (a human submits it)
 ```
 
 Surveillance runs continuously and cheaply. Investigation opens only on an
 accepted candidate or a human report. Stewardship runs daily against every
 patient on an antimicrobial. Compliance runs against the requirement register.
-None of the four decides anything - each one terminates at a named human role.
+None of them decides anything - each one terminates at a named human role. The
+report agent decides least of all: it never computes an event, it only reports
+the ones a human already adjudicated.
 
 The skill is the reusable layer. Agents are thin: they declare a mission, a data
 scope, and a routing table, and inherit reasoning and safety from the skill.
@@ -126,6 +144,7 @@ cp agents/infection-surveillance-agent/AGENT.md ~/.claude/agents/infection-surve
 cp agents/outbreak-detection-agent/AGENT.md ~/.claude/agents/outbreak-detection-agent.md
 cp agents/antibiotic-stewardship-agent/AGENT.md ~/.claude/agents/antibiotic-stewardship-agent.md
 cp agents/policy-compliance-agent/AGENT.md ~/.claude/agents/policy-compliance-agent.md
+cp agents/infection-report-agent/AGENT.md ~/.claude/agents/infection-report-agent.md
 cp agents/fde-deployment-agent/AGENT.md ~/.claude/agents/fde-deployment-agent.md
 ```
 
@@ -177,6 +196,10 @@ a hospital deployment exists. See [fixtures/README.md](fixtures/README.md).
 - Outbreak Detection Agent
 - Antibiotic Stewardship Agent
 - Policy Compliance Agent
+
+**Phase 2.5 - done**
+- Infection Report Agent: committee, board, unit, and submission packages
+  assembled from the audit trail, with explicit restatement
 
 **Phase 3 - done**
 - FDE Deployment Agent: profiles a hospital's EHR, workflow, and staffing, then

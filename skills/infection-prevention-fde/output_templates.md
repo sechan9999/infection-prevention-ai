@@ -543,6 +543,103 @@ not pass them.
 Audit Record:
 Generated - <audit_id>
 ```
+
+---
+
+## Template 14: Committee / Board Report Packet
+
+```
+INFECTION PREVENTION REPORT - DRAFT (approval removes this marker)
+Period: <YYYY-MM>   Audience: ICC | Board/Quality | Unit <name>
+Snapshot: <snapshot_id> frozen <datetime>   Adjudication cutoff: <datetime>
+Prepared: <datetime>   Approver: <role, pending until signed>
+
+--- SUMMARY ---
+<3-5 sentences. Same facts in every audience version; plainer wording for the
+board. No measure appears here with a value different from the tables below.>
+
+--- HEALTHCARE-ASSOCIATED INFECTIONS ---
+| Type | Events | Denominator (type) | Rate | 95% CI | vs prior period | Trend statement |
+| CLABSI | 2 | 480 central line days | 4.17/1000 | wide | 1 -> 2 | withheld: below minimum |
+| CAUTI  | 0 | 610 catheter days | 0.00/1000 | - | 0 -> 0 | zero, coverage 100% |
+Denominator source: <system>   Pending at cutoff: <n> (not distributed above)
+
+--- SIR / SAAR ---
+| Measure | Observed | Predicted | Value | Reportable? |
+Reported only above the predicted-events threshold; otherwise raw counts, with
+the reason stated.
+
+--- OUTBREAKS AND CLUSTERS ---
+| Investigation | State | Cases | Unit | Opened | Closed |
+Summaries attached per Template 8.
+
+--- ANTIMICROBIAL USE AND RESISTANCE ---
+Headline measures only; full package per Template 10.
+
+--- COMPLIANCE ---
+Open findings by risk, corrective actions by age; full view per Template 11.
+
+--- DISCREPANCIES FOUND THIS PERIOD ---
+| Measure | Source A | Source B | Delta | Cause | Resolution | Resolved by |
+None silently reconciled. Unresolved discrepancies block distribution.
+
+--- SUPPRESSED ---
+<n> cells withheld: group size below minimum (<n>)
+
+--- LIMITATIONS ---
+- <feed gaps, coverage changes, denominator method changes this period>
+- Small numbers: <which measures cannot support a trend statement>
+
+--- PROVENANCE ---
+Every figure above resolves to adjudicated audit records.
+Contributing audit_ids: <count>, listed in the archive under <snapshot_id>.
+
+Human Approval Required:
+Yes - Infection Preventionist. This packet reports adjudicated events; it does
+not adjudicate, certify, or submit anything.
+
+Audit Record:
+Generated - <audit_id>
+```
+
+---
+
+## Template 15: Restatement Notice
+
+```
+RESTATEMENT NOTICE
+Issued: <date>   Affects: <period(s)>   Original reports: <ids, distribution dates>
+Audiences to notify: <every audience that received the original>
+
+--- WHAT CHANGED ---
+| Measure | Period | As reported | Revised to | Direction |
+| CLABSI events | 2026-05 | 3 | 2 | down |
+
+--- WHY ---
+<cause: case reclassified on IP review / late-arriving culture / corrected
+denominator / discrepancy resolution. A restatement without a stated cause is
+not issued.>
+Reclassification audit_id: <id>   Decided by: <role>   On: <date>
+
+--- WHAT IS NOT AFFECTED ---
+<measures and periods that are unchanged, stated explicitly so readers do not
+assume the whole report is in doubt>
+
+--- ORIGINAL REPORT STATUS ---
+Preserved as distributed. Not edited. This notice supersedes the affected figures
+only.
+
+--- WHY THIS IS NORMAL ---
+Surveillance events are adjudicated on a cutoff; later information changes some
+of them. Restating openly is the expected behavior. Silently changing a
+previously distributed number is not.
+
+Human Approval Required:
+Yes - Infection Preventionist, who distributes this notice.
+
+Audit Record:
+Generated - <audit_id>
+```
 ---
 
 ## Rules for all templates
@@ -553,3 +650,7 @@ Generated - <audit_id>
 - Patient identifiers are de-identified keys in every template.
 - No template ever contains a diagnosis, an order, or a therapy recommendation.
 - No template ever contains a staff name or an individual performance finding.
+- Every rate is printed with its denominator, named and shown. A rate without
+  its denominator is not reportable.
+- A previously distributed number is never edited in place. It is restated,
+  with its cause, to every audience that received the original.
