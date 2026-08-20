@@ -98,16 +98,35 @@ rules=$(grep -hoE '^\| [RS]-[A-Z]+-[0-9]+' agents/*/workflow.md 2>/dev/null | wc
 if [ "$rules" -gt 0 ]; then ok C7 "rules carry versioned ids" "$rules found";
 else bad C7 "rules carry versioned ids" "0 found"; fi
 
-# --- C8: SKILL.md roster separates built from planned, and built is accurate --
-if grep -q "^Built and in this repository:" "$SKILL_MD" && grep -q "^Planned, not yet built:" "$SKILL_MD"; then
+# --- C8: the roster tells the truth about what exists ----------------------
+# Two halves. Every built agent must appear under the built heading, and any
+# entry still listed as planned must NOT already exist as a directory - a
+# planned agent that shipped is a roster that understates the repo, which is
+# how a reader ends up not knowing an agent is there.
+if grep -q "^Built and in this repository:" "$SKILL_MD"; then
   n=0
   for d in "${AGENT_DIRS[@]}"; do
     name=$(basename "$d")
     grep -q "agents/$name/" "$SKILL_MD" && n=$((n+1)) || note "built agent absent from SKILL.md roster: $name"
   done
   assert C8 "SKILL.md roster lists every built agent" "$n" "$AGENT_COUNT"
+
+  # the planned section is optional; when present it must be accurate
+  if grep -q "^Planned, not yet built:" "$SKILL_MD"; then
+    stale=0
+    while IFS= read -r line; do
+      for d in "${AGENT_DIRS[@]}"; do
+        slug=$(basename "$d" | sed 's/-agent$//' | tr '-' ' ')
+        if echo "$line" | grep -qi "$slug"; then
+          note "listed as planned but already built: $(basename "$d")"
+          stale=$((stale+1))
+        fi
+      done
+    done < <(sed -n '/^Planned, not yet built:/,/^---/p' "$SKILL_MD" | grep '^[0-9]\+\.')
+    assert C8b "planned entries are genuinely unbuilt" "$stale" "0"
+  fi
 else
-  bad C8 "SKILL.md roster splits built from planned" "missing heading"
+  bad C8 "SKILL.md roster names a built section" "missing heading"
 fi
 
 # --- C9: agents reference knowledge.md for clinical definitions --------------

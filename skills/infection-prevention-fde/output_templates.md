@@ -640,6 +640,117 @@ Yes - Infection Preventionist, who distributes this notice.
 Audit Record:
 Generated - <audit_id>
 ```
+
+---
+
+## Template 16: Education Brief
+
+```
+EDUCATION BRIEF - DRAFT (removable only by a recorded human review)
+Topic: <one behavior>   Content version: <v>   Prepared: <date>
+
+--- CAUSE TRIAGE (runs before any content) ---
+Pattern: <findings, units, shifts, dates, recurrence>
+Previously taught: <date, version, and whether the finding rate moved>
+Cause: knowledge | system | workflow | documentation | mixed
+Evidence: <what points to this cause>
+Confidence: <n>% (<basis>)
+
+IF cause is system / workflow / documentation, the brief STOPS HERE:
+
+  --- NO EDUCATION PROPOSED ---
+  This finding is a <cause> problem. Education would not close it.
+  Actual cause: <specific - dispenser placement, missing form field, the correct
+  action takes 4 extra minutes, supply stockout>
+  Routed to: <agent / role> as a <gap class> finding
+  Recorded so that "staff were trained" is not later offered as the fix.
+
+IF cause is knowledge (or the knowledge portion of mixed), continue:
+
+--- AUDIENCE ---
+Roles: <who performs the action - often not the role the finding named>
+Units: <...>   Shifts: <incl. night, weekend, agency, contracted>
+Segment sizes: <n each>   Rolled up below minimum: <n>
+Coverage gaps: <segments no existing channel reaches>
+
+--- THE BRIEF ---
+1. The behavior
+   <one specific action, in the words of the person doing it>
+2. Why it matters
+   <the mechanism, not the rule number>
+3. What good looks like
+   <concrete and observable>
+4. The common failure
+   <the actual pattern, de-identified, no unit named as worst>
+5. Source
+   <guideline or policy, version, section>
+
+Points dropped for lack of a retrievable source: <list, or none>
+
+--- DELIVERY PLAN ---
+Format: huddle script | job aid | short session | onboarding
+Timing: <teachable moment and why now>
+Delivered by: <named role>
+Total staff time: <n> minutes x <n> staff = <n> minutes
+Reinforcement: <if needed>
+
+--- MEASUREMENT ---
+Target behavior finding rate, baseline: <n>/<denominator>
+Review at: 30 days, 90 days (Template 17)
+
+Human Review Required:
+Yes - Infection Preventionist or clinical educator, who checks clinical accuracy
+against the cited source, policy consistency, tone, and that nothing identifies a
+person or a case. The agent drafts; it does not deliver, schedule, or attest.
+
+Audit Record:
+Generated - <audit_id>
+```
+
+---
+
+## Template 17: Education Effectiveness Review
+
+```
+EDUCATION EFFECTIVENESS REVIEW
+Topic: <behavior>   Content version: <v>   Delivered: <dates>
+Review point: 30 days | 90 days
+
+--- DID THE BEHAVIOR CHANGE ---
+| Measure | Baseline | Now | Denominator | Change |
+| Target behavior finding rate | | | | |
+| Recurrence after verified corrective action | | | | |
+| Related event rate (where plausibly connected) | | | | |
+
+--- REACH ---
+| Segment | Target | Reached | % | Gap |
+Night / weekend / agency reach stated separately.
+
+--- COMPLETION ---
+Completion rate: <x>%
+Reported only beside the finding-rate change above. A completed module with an
+unchanged finding rate is a failed intervention, not a delivered one.
+
+--- WHAT ELSE CHANGED IN THIS PERIOD ---
+<supply change, staffing change, construction, policy change, seasonal pattern>
+Rate movement is not attributed to the teaching without accounting for these.
+
+--- VERDICT ---
+[ ] Behavior changed - keep the content, schedule reinforcement
+[ ] No change - return to cause triage; the original classification may be wrong
+[ ] Worse - investigate before teaching again
+
+If no change: the topic cannot be re-classified as a knowledge gap without new
+evidence. Repeating the same content is the least likely thing to work, and a
+topic taught twice without movement is almost always a misclassified system
+problem.
+
+Human Approval Required:
+Yes - Infection Preventionist and educator.
+
+Audit Record:
+Generated - <audit_id>
+```
 ---
 
 ## Rules for all templates
@@ -654,3 +765,5 @@ Generated - <audit_id>
   its denominator is not reportable.
 - A previously distributed number is never edited in place. It is restated,
   with its cause, to every audience that received the original.
+- Education is never proposed as the remedy for a system, workflow, or
+  documentation gap. The cause is triaged before any teaching content exists.

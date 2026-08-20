@@ -156,13 +156,11 @@ Built and in this repository:
 
 6. Infection Report Agent - `agents/infection-report-agent/`
 
-Planned, not yet built:
+7. Infection Education Agent - `agents/infection-education-agent/`
 
-7. Infection Education Agent - targeted staff education from finding patterns
-
-A planned agent is a roster entry, not a capability. Anything relying on this
-skill should treat items 6 and 7 as absent until they exist as an agent
-directory with the AGENT/workflow/tools triple.
+The roster is complete: every agent type this skill names exists as a directory
+with the AGENT/workflow/tools triple. If a future entry is added here before it
+is built, mark it planned - a planned agent is a roster entry, not a capability.
 
 ---
 

@@ -46,6 +46,11 @@ infection-prevention-ai/
     │   ├── workflow.md         # requirement register, gap classes, CA tracking
     │   └── tools.md            # inherited + register, verification, CA tracker, deadlines
     │
+    ├── infection-education-agent/
+    │   ├── AGENT.md            # cause triage before content, non-punitive
+    │   ├── workflow.md         # triage, segment, draft, review gate, effect
+    │   └── tools.md            # triage, segmentation, drafting, delivery, effect
+    │
     ├── infection-report-agent/
     │   ├── AGENT.md            # report catalogue, one-number discipline
     │   ├── workflow.md         # snapshot, reconcile, restate, submission prep
@@ -59,8 +64,10 @@ infection-prevention-ai/
 
 Four agents run the hospital's infection prevention work. The report agent turns
 what they adjudicated into the documents the committee, the board, and the
-regulator receive. The deployment agent configures all of them for a specific
-hospital and proves they work there before anyone depends on them.
+regulator receive. The education agent decides what staff teaching the findings
+actually justify - and refuses to propose any when the cause is a system problem.
+The deployment agent configures all of them for a specific hospital and proves
+they work there before anyone depends on them.
 
 ## The agent chain
 
@@ -99,6 +106,15 @@ hospital and proves they work there before anyone depends on them.
                          |
                          v
       ICC | Board | Units | NHSN package (a human submits it)
+
+              finding patterns
+                         v
+              Infection Education Agent
+   triages cause first | teaches only genuine knowledge gaps
+   refuses when the cause is supplies, workflow, or a form
+                         |
+                         v
+     IP / clinical educator reviews, owns, and teaches it
 ```
 
 Surveillance runs continuously and cheaply. Investigation opens only on an
@@ -145,6 +161,7 @@ cp agents/outbreak-detection-agent/AGENT.md ~/.claude/agents/outbreak-detection-
 cp agents/antibiotic-stewardship-agent/AGENT.md ~/.claude/agents/antibiotic-stewardship-agent.md
 cp agents/policy-compliance-agent/AGENT.md ~/.claude/agents/policy-compliance-agent.md
 cp agents/infection-report-agent/AGENT.md ~/.claude/agents/infection-report-agent.md
+cp agents/infection-education-agent/AGENT.md ~/.claude/agents/infection-education-agent.md
 cp agents/fde-deployment-agent/AGENT.md ~/.claude/agents/fde-deployment-agent.md
 ```
 
@@ -167,7 +184,7 @@ defines.
 bash scripts/conformance.sh
 ```
 
-Twelve checks, run in CI on every push and pull request. See
+Thirteen checks, run in CI on every push and pull request. See
 [scripts/README.md](scripts/README.md) for what each one catches and why it
 exists.
 
@@ -200,6 +217,10 @@ a hospital deployment exists. See [fixtures/README.md](fixtures/README.md).
 **Phase 2.5 - done**
 - Infection Report Agent: committee, board, unit, and submission packages
   assembled from the audit trail, with explicit restatement
+- Infection Education Agent: cause triage before any teaching content, measured
+  by the finding rate rather than the completion rate
+
+The agent roster named in the skill is now complete - seven of seven built.
 
 **Phase 3 - done**
 - FDE Deployment Agent: profiles a hospital's EHR, workflow, and staffing, then
