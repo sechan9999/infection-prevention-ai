@@ -1,0 +1,345 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Synthetic boundary cases for CLABSI rule-engine regression testing. No real patients.",
+  "phi": "none - all cases synthetic; dates are relative day offsets from the culture day (day 0)",
+  "definition_sources": {
+    "note": "Expected verdicts follow NHSN CLABSI/LCBI surveillance logic as of this file's authorship. Surveillance definitions are revised annually - re-verify against the current NHSN Patient Safety Component Manual before treating a fixture failure as an engine defect.",
+    "primary": "CDC NHSN Patient Safety Component Manual (https://www.cdc.gov/nhsn/)",
+    "national_program": "declare and version-lock separately (e.g. KONIS in Korea); not interchangeable with NHSN",
+    "hospital_policy": "hospital policy overrides where stricter; record its version"
+  },
+  "required_archetypes": [
+    "pathogen_typical",
+    "commensal_two_sets_symptomatic",
+    "not_line_associated",
+    "line_dates_missing",
+    "commensal_single_set_asymptomatic",
+    "secondary_bsi",
+    "repeat_within_rit",
+    "mbi_lcbi",
+    "neonate_non_fever_symptoms",
+    "device_day_boundary",
+    "two_bottles_one_draw"
+  ],
+  "cases": [
+    {
+      "case_id": "C-001",
+      "archetype": "pathogen_typical",
+      "tests": "Happy path: recognized pathogen, line in place, alternate source excluded.",
+      "input": {
+        "specimen_type": "blood",
+        "organism_normalized": "Staphylococcus aureus",
+        "organism_is_contaminant": false,
+        "set_count": 2,
+        "separate_occasions": true,
+        "both_sets_same_organism": true,
+        "cvc_insert_day": -3,
+        "cvc_remove_day": null,
+        "cvc_present_on_event_day": true,
+        "patient_age_years": 64,
+        "fever_38_plus": true,
+        "secondary_bsi_primary_site": null,
+        "prior_event_within_rit": false,
+        "neutropenic": false
+      },
+      "expected": {
+        "verdict": "candidate",
+        "grade": "GRADE_A",
+        "flags": [],
+        "reason_contains": ["pathogen", "line-associated"]
+      },
+      "definition_note": null
+    },
+    {
+      "case_id": "C-002",
+      "archetype": "commensal_two_sets_symptomatic",
+      "tests": "Common commensal must NOT be auto-rejected as contamination.",
+      "input": {
+        "specimen_type": "blood",
+        "organism_normalized": "Coagulase-negative staphylococci",
+        "organism_is_contaminant": true,
+        "set_count": 2,
+        "separate_occasions": true,
+        "both_sets_same_organism": true,
+        "cvc_insert_day": -6,
+        "cvc_remove_day": null,
+        "cvc_present_on_event_day": true,
+        "patient_age_years": 71,
+        "fever_38_plus": true,
+        "secondary_bsi_primary_site": null,
+        "prior_event_within_rit": false,
+        "neutropenic": false
+      },
+      "expected": {
+        "verdict": "candidate",
+        "grade": "GRADE_C",
+        "flags": ["verification_required"],
+        "reason_contains": ["commensal", "separate occasions", "symptom"]
+      },
+      "definition_note": "Mirrors the 2-sets-plus-symptom branch. Auto-rejection here is a hard failure."
+    },
+    {
+      "case_id": "C-003",
+      "archetype": "not_line_associated",
+      "tests": "Line removed well before the event; alternate source explains the BSI.",
+      "input": {
+        "specimen_type": "blood",
+        "organism_normalized": "Escherichia coli",
+        "organism_is_contaminant": false,
+        "set_count": 2,
+        "separate_occasions": true,
+        "both_sets_same_organism": true,
+        "cvc_insert_day": -20,
+        "cvc_remove_day": -9,
+        "cvc_present_on_event_day": false,
+        "patient_age_years": 58,
+        "fever_38_plus": true,
+        "secondary_bsi_primary_site": "urinary",
+        "prior_event_within_rit": false,
+        "neutropenic": false
+      },
+      "expected": {
+        "verdict": "non_candidate",
+        "grade": null,
+        "flags": [],
+        "reason_contains": ["not line-associated"]
+      },
+      "definition_note": null
+    },
+    {
+      "case_id": "C-004",
+      "archetype": "line_dates_missing",
+      "tests": "Missing device data must go indeterminate, not default either way.",
+      "input": {
+        "specimen_type": "blood",
+        "organism_normalized": "Klebsiella pneumoniae",
+        "organism_is_contaminant": false,
+        "set_count": 2,
+        "separate_occasions": true,
+        "both_sets_same_organism": true,
+        "cvc_insert_day": null,
+        "cvc_remove_day": null,
+        "cvc_present_on_event_day": null,
+        "patient_age_years": 49,
+        "fever_38_plus": true,
+        "secondary_bsi_primary_site": null,
+        "prior_event_within_rit": false,
+        "neutropenic": false
+      },
+      "expected": {
+        "verdict": "indeterminate",
+        "grade": null,
+        "flags": ["line_data_unavailable", "policy_decision_required"],
+        "reason_contains": ["line data"]
+      },
+      "definition_note": "Must not be counted as FP or FN. Its own bucket."
+    },
+    {
+      "case_id": "C-005",
+      "archetype": "commensal_single_set_asymptomatic",
+      "tests": "The easy true negative.",
+      "input": {
+        "specimen_type": "blood",
+        "organism_normalized": "Coagulase-negative staphylococci",
+        "organism_is_contaminant": true,
+        "set_count": 1,
+        "separate_occasions": false,
+        "both_sets_same_organism": false,
+        "cvc_insert_day": -8,
+        "cvc_remove_day": null,
+        "cvc_present_on_event_day": true,
+        "patient_age_years": 66,
+        "fever_38_plus": false,
+        "secondary_bsi_primary_site": null,
+        "prior_event_within_rit": false,
+        "neutropenic": false
+      },
+      "expected": {
+        "verdict": "non_candidate",
+        "grade": null,
+        "flags": [],
+        "reason_contains": ["single set", "no symptom"]
+      },
+      "definition_note": null
+    },
+    {
+      "case_id": "C-006",
+      "archetype": "secondary_bsi",
+      "tests": "Largest real-world FP source: organism matches a primary site within its attribution period.",
+      "input": {
+        "specimen_type": "blood",
+        "organism_normalized": "Pseudomonas aeruginosa",
+        "organism_is_contaminant": false,
+        "set_count": 2,
+        "separate_occasions": true,
+        "both_sets_same_organism": true,
+        "cvc_insert_day": -11,
+        "cvc_remove_day": null,
+        "cvc_present_on_event_day": true,
+        "patient_age_years": 73,
+        "fever_38_plus": true,
+        "secondary_bsi_primary_site": "pneumonia",
+        "secondary_bsi_organism_match": true,
+        "secondary_bsi_within_attribution_period": true,
+        "prior_event_within_rit": false,
+        "neutropenic": false
+      },
+      "expected": {
+        "verdict": "non_candidate",
+        "grade": null,
+        "flags": ["secondary_bsi"],
+        "reason_contains": ["secondary"]
+      },
+      "definition_note": "A single other_focal_infection boolean cannot express this. Needs attribution period plus organism match."
+    },
+    {
+      "case_id": "C-007",
+      "archetype": "repeat_within_rit",
+      "tests": "Double-counting guard: same organism inside the repeat infection timeframe.",
+      "input": {
+        "specimen_type": "blood",
+        "organism_normalized": "Enterococcus faecalis",
+        "organism_is_contaminant": false,
+        "set_count": 2,
+        "separate_occasions": true,
+        "both_sets_same_organism": true,
+        "cvc_insert_day": -15,
+        "cvc_remove_day": null,
+        "cvc_present_on_event_day": true,
+        "patient_age_years": 61,
+        "fever_38_plus": true,
+        "secondary_bsi_primary_site": null,
+        "prior_event_within_rit": true,
+        "prior_event_day": -6,
+        "prior_event_organism_match": true,
+        "neutropenic": false
+      },
+      "expected": {
+        "verdict": "non_candidate",
+        "grade": null,
+        "flags": ["within_rit"],
+        "reason_contains": ["repeat"]
+      },
+      "definition_note": "Usually absent from a v1 engine. Its absence inflates counts silently."
+    },
+    {
+      "case_id": "C-008",
+      "archetype": "mbi_lcbi",
+      "tests": "Neutropenic patient with an MBI organism - a separate category, not a CLABSI.",
+      "input": {
+        "specimen_type": "blood",
+        "organism_normalized": "Streptococcus mitis",
+        "organism_is_contaminant": false,
+        "set_count": 2,
+        "separate_occasions": true,
+        "both_sets_same_organism": true,
+        "cvc_insert_day": -9,
+        "cvc_remove_day": null,
+        "cvc_present_on_event_day": true,
+        "patient_age_years": 44,
+        "fever_38_plus": true,
+        "secondary_bsi_primary_site": null,
+        "prior_event_within_rit": false,
+        "neutropenic": true,
+        "anc_low_days": 4,
+        "mbi_organism": true
+      },
+      "expected": {
+        "verdict": "non_candidate",
+        "grade": null,
+        "flags": ["mbi_lcbi_candidate"],
+        "reason_contains": ["mucosal barrier"]
+      },
+      "definition_note": "Should route to the MBI-LCBI path - neither dropped, nor counted as CLABSI."
+    },
+    {
+      "case_id": "C-009",
+      "archetype": "neonate_non_fever_symptoms",
+      "tests": "Fever-only symptom logic misses infants entirely.",
+      "input": {
+        "specimen_type": "blood",
+        "organism_normalized": "Coagulase-negative staphylococci",
+        "organism_is_contaminant": true,
+        "set_count": 2,
+        "separate_occasions": true,
+        "both_sets_same_organism": true,
+        "cvc_insert_day": -5,
+        "cvc_remove_day": null,
+        "cvc_present_on_event_day": true,
+        "patient_age_years": 0,
+        "patient_age_days": 19,
+        "fever_38_plus": false,
+        "hypothermia": true,
+        "apnea": true,
+        "bradycardia": false,
+        "secondary_bsi_primary_site": null,
+        "prior_event_within_rit": false,
+        "neutropenic": false
+      },
+      "expected": {
+        "verdict": "candidate",
+        "grade": "GRADE_C",
+        "flags": ["verification_required", "age_specific_criteria"],
+        "reason_contains": ["infant", "hypothermia"]
+      },
+      "definition_note": "Infant criteria use hypothermia / apnea / bradycardia instead of fever."
+    },
+    {
+      "case_id": "C-010",
+      "archetype": "device_day_boundary",
+      "tests": "Calendar-day rule, not a 48-hour clock. Line in place exactly 2 calendar days.",
+      "input": {
+        "specimen_type": "blood",
+        "organism_normalized": "Serratia marcescens",
+        "organism_is_contaminant": false,
+        "set_count": 2,
+        "separate_occasions": true,
+        "both_sets_same_organism": true,
+        "cvc_insert_day": -1,
+        "cvc_remove_day": null,
+        "cvc_present_on_event_day": true,
+        "patient_age_years": 55,
+        "fever_38_plus": true,
+        "secondary_bsi_primary_site": null,
+        "prior_event_within_rit": false,
+        "neutropenic": false
+      },
+      "expected": {
+        "verdict": "non_candidate",
+        "grade": null,
+        "flags": ["device_days_not_met"],
+        "reason_contains": ["calendar day"]
+      },
+      "definition_note": "Insertion day = day 1, event day = day 2. The rule requires MORE than 2 consecutive calendar days, so an hour-based 48h check returns the wrong answer here."
+    },
+    {
+      "case_id": "C-011",
+      "archetype": "two_bottles_one_draw",
+      "tests": "set_count >= 2 is not the same as separate occasions.",
+      "input": {
+        "specimen_type": "blood",
+        "organism_normalized": "Coagulase-negative staphylococci",
+        "organism_is_contaminant": true,
+        "set_count": 2,
+        "separate_occasions": false,
+        "both_sets_same_organism": true,
+        "draw_site": "single venipuncture, 2 bottles",
+        "cvc_insert_day": -7,
+        "cvc_remove_day": null,
+        "cvc_present_on_event_day": true,
+        "patient_age_years": 68,
+        "fever_38_plus": true,
+        "secondary_bsi_primary_site": null,
+        "prior_event_within_rit": false,
+        "neutropenic": false
+      },
+      "expected": {
+        "verdict": "non_candidate",
+        "grade": null,
+        "flags": ["not_separate_occasions"],
+        "reason_contains": ["separate occasion"]
+      },
+      "definition_note": "The mapping bug this fixture exists to catch."
+    }
+  ]
+}

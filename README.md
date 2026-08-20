@@ -152,6 +152,19 @@ Twelve checks, run in CI on every push and pull request. See
 [scripts/README.md](scripts/README.md) for what each one catches and why it
 exists.
 
+Rule engines get a second suite: `fixtures/clabsi_cases.json` holds eleven
+synthetic CLABSI cases with expected verdicts - five typical, six boundary
+(secondary BSI, repeat-within-RIT, MBI-LCBI, infant symptom criteria, device-day
+boundary, two-bottles-one-draw).
+
+```bash
+python scripts/rule_replay.py                                        # lint fixtures
+RULE_ENGINE_CMD="python my_engine.py" python scripts/rule_replay.py  # replay
+```
+
+No PHI and no engine required to run it, so rule regressions are catchable before
+a hospital deployment exists. See [fixtures/README.md](fixtures/README.md).
+
 ---
 
 ## Roadmap

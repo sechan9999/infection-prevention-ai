@@ -35,3 +35,26 @@ no clinical reasoning, so it has no reason to load surveillance definitions.
 C6 exists because Template 6 sat orphaned for four commits before a manual review
 caught it. When a review finds a class of mistake, add the check rather than
 fixing only the instance.
+
+---
+
+## rule_replay.py
+
+Replays the synthetic CLABSI fixture set in `fixtures/` against a rule engine.
+
+```bash
+python scripts/rule_replay.py                                        # lint only
+RULE_ENGINE_CMD="python my_engine.py" python scripts/rule_replay.py  # replay
+```
+
+Lint mode validates the fixture set itself - schema, archetype coverage, and that
+nothing PHI-shaped crept in - and runs in CI with no engine present. Replay mode
+feeds each case to an engine and compares its verdict to the expected one.
+
+The six boundary archetypes (secondary BSI, repeat-within-RIT, MBI-LCBI, infant
+symptom criteria, device-day boundary, two-bottles-one-draw) are asserted to
+exist. A fixture set that quietly loses them fails the build, because those are
+the cases that separate a working engine from one that only handles the easy
+path.
+
+See `fixtures/README.md` for the case table and the engine I/O contract.

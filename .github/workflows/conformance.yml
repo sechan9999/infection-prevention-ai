@@ -19,6 +19,9 @@ jobs:
       - name: Run conformance checks
         run: bash scripts/conformance.sh
 
+      - name: Lint CLABSI fixtures
+        run: python3 scripts/rule_replay.py
+
       - name: Summary
         if: always()
         run: |
@@ -27,5 +30,6 @@ jobs:
             echo ""
             echo '```'
             NO_COLOR=1 bash scripts/conformance.sh || true
+            NO_COLOR=1 python3 scripts/rule_replay.py || true
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
