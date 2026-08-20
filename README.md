@@ -19,11 +19,15 @@ audit record attached.
 infection-prevention-ai/
 │
 ├── skills/
-│   └── infection-prevention-fde/
-│       ├── SKILL.md            # principles, reasoning workflow, output contract
-│       ├── knowledge.md        # surveillance definitions, epi logic, regulatory context
-│       ├── safety_rules.md     # hard constraints (override everything else)
-│       └── output_templates.md # fixed output shapes + audit record schema
+│   ├── infection-prevention-fde/
+│   │   ├── SKILL.md            # principles, reasoning workflow, output contract
+│   │   ├── knowledge.md        # surveillance definitions, epi logic, regulatory context
+│   │   ├── safety_rules.md     # hard constraints (override everything else)
+│   │   └── output_templates.md # fixed output shapes + audit record schema
+│   │
+│   └── clabsi-retrospective-validation/
+│       ├── SKILL.md            # rule-engine validation procedure, pre-registered gates
+│       └── references/         # metrics, explanation rubric, report template
 │
 └── agents/
     ├── infection-surveillance-agent/
@@ -124,8 +128,16 @@ None of them decides anything - each one terminates at a named human role. The
 report agent decides least of all: it never computes an event, it only reports
 the ones a human already adjudicated.
 
-The skill is the reusable layer. Agents are thin: they declare a mission, a data
-scope, and a routing table, and inherit reasoning and safety from the skill.
+The first skill is the reusable layer. Agents are thin: they declare a mission, a
+data scope, and a routing table, and inherit reasoning and safety from it.
+
+The second skill is a procedure rather than a persona: how to validate a
+deterministic rule engine against an Infection Preventionist's own adjudications
+before anyone relies on it. It pairs with `fixtures/` - fixtures first, real
+retrospective second.
+
+This repository is the source of truth for both. The copies under `~/.claude/`
+are installs; edit here and re-copy.
 
 ---
 
@@ -156,6 +168,7 @@ Both files are plain Markdown with YAML frontmatter, so they load directly:
 ```bash
 mkdir -p ~/.claude/skills ~/.claude/agents
 cp -r skills/infection-prevention-fde ~/.claude/skills/
+cp -r skills/clabsi-retrospective-validation ~/.claude/skills/
 cp agents/infection-surveillance-agent/AGENT.md ~/.claude/agents/infection-surveillance-agent.md
 cp agents/outbreak-detection-agent/AGENT.md ~/.claude/agents/outbreak-detection-agent.md
 cp agents/antibiotic-stewardship-agent/AGENT.md ~/.claude/agents/antibiotic-stewardship-agent.md
@@ -184,7 +197,7 @@ defines.
 bash scripts/conformance.sh
 ```
 
-Thirteen checks, run in CI on every push and pull request. See
+Fourteen checks, run in CI on every push and pull request. See
 [scripts/README.md](scripts/README.md) for what each one catches and why it
 exists.
 

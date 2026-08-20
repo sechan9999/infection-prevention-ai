@@ -27,6 +27,7 @@ pull request (`.github/workflows/conformance.yml`).
 | C10 | Every tools.md enforces cite-or-withhold | An agent may state a guideline from memory |
 | C11 | Every agent states patient de-identification | A PHI clause is missing |
 | C12 | Template-level prohibitions present | The no-diagnosis or no-staff-name rule is deleted |
+| C13 | Every skill directory is loadable | A skill lacks SKILL.md or name/description frontmatter |
 
 C9 is informational and never fails the build: the FDE Deployment Agent performs
 no clinical reasoning, so it has no reason to load surveillance definitions.

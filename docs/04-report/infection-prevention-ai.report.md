@@ -5,7 +5,7 @@
 > **Project**: infection-prevention-ai
 > **Version**: 0.2.0
 > **Author**: Gyver (tcgyver@gmail.com)
-> **Report version**: 2.0
+> **Report version**: 2.1
 > **Completion Date**: 2026-08-19
 > **PDCA Cycles**: #1 (skill + 5 agents), #2 (roster completion + test automation)
 > **Repository**: https://github.com/sechan9999/infection-prevention-ai
@@ -18,10 +18,10 @@
 
 | Item | Content |
 |------|---------|
-| Feature | infection-prevention-ai (1 skill + 7 agents + 2 test suites) |
+| Feature | infection-prevention-ai (2 skills + 7 agents + 2 test suites) |
 | Start Date | 2026-08-19 |
 | End Date | 2026-08-19 |
-| Duration | 1 session, 13 commits |
+| Duration | 1 session, 14 commits |
 | Deliverable type | Specification repository, with executable test suites |
 
 ### 1.2 Results Summary
@@ -30,9 +30,9 @@
 +---------------------------------------------+
 |  Agent roster:      7 / 7 built             |
 |  Output templates:  17                      |
-|  Conformance:       13 checks, 0 failing    |
+|  Conformance:       14 checks, 0 failing    |
 |  Fixtures:          11 boundary cases       |
-|  Markdown:          5,099 lines, 21 files   |
+|  Markdown:          5,439 lines, 25 files   |
 |  Open findings:     0 (3 raised, 3 resolved)|
 +---------------------------------------------+
 ```
@@ -47,6 +47,8 @@
 | CLABSI fixture suite | 11 synthetic boundary cases plus a replay runner, wired into CI |
 | C8 rewrite plus C8b | the roster check now asserts the real invariant |
 | 4 template-level rules | denominators, no in-place edits, education-is-not-a-fix |
+| Retrospective-validation skill | moved into the repo as the second skill |
+| C13 | every skill directory must be loadable |
 
 ### 1.4 Honest scoping note
 
@@ -56,7 +58,7 @@ no runtime engine and no deployment.
 
 What is now executable, and runs in CI on every push:
 
-- `scripts/conformance.sh` - 13 structural checks over the architecture
+- `scripts/conformance.sh` - 14 structural checks over the architecture
 - `scripts/rule_replay.py` - 11 synthetic CLABSI boundary cases
 
 Both are tests of the specification, not of a running system. There is still no
@@ -79,10 +81,11 @@ deliverable, and each agent is validated against it. In cycle #1 the conformance
 criteria had to be defined retroactively in this report. In cycle #2 they existed
 first, as a script, and the two new agents were built against them.
 
-Related artifact, outside this repository:
-`~/.claude/skills/clabsi-retrospective-validation/` - the procedure for validating
-a rule engine against IP adjudications, with metrics, an explanation rubric, and a
-report template. Candidate for relocation into this repo.
+Second skill, now in the repository:
+`skills/clabsi-retrospective-validation/` - the procedure for validating a rule
+engine against IP adjudications, with metrics, an explanation rubric, and a report
+template. The repo is the source of truth; the copy under `~/.claude/skills/` is an
+install.
 
 ---
 
@@ -101,7 +104,7 @@ report template. Candidate for relocation into this repo.
 | FR-07 | Infection Report Agent | Complete | snapshot, reconcile, restate, submission prep |
 | FR-08 | Infection Education Agent | Complete | cause triage gate, effectiveness by finding rate |
 | FR-09 | Output contract library | Complete | 17 templates incl. machine-readable audit record |
-| FR-10 | Structural conformance suite | Complete | 13 checks, CI on push and PR |
+| FR-10 | Structural conformance suite | Complete | 14 checks, CI on push and PR |
 | FR-11 | CLABSI boundary fixtures | Complete | 11 cases, replay runner, CI lint |
 | FR-12 | Portfolio registration | Complete | project 09, EN/KO, kept in sync at 5 then 6 then 7 agents |
 
@@ -124,7 +127,8 @@ report template. Candidate for relocation into this repo.
 
 | Deliverable | Location | Lines |
 |-------------|----------|-------|
-| Skill | `skills/infection-prevention-fde/` | 1,211 |
+| Skill - FDE | `skills/infection-prevention-fde/` | 1,211 |
+| Skill - retrospective validation | `skills/clabsi-retrospective-validation/` | 326 |
 | FDE deployment agent | `agents/fde-deployment-agent/` | 566 |
 | Policy compliance agent | `agents/policy-compliance-agent/` | 550 |
 | Outbreak detection agent | `agents/outbreak-detection-agent/` | 548 |
@@ -134,7 +138,7 @@ report template. Candidate for relocation into this repo.
 | Infection surveillance agent | `agents/infection-surveillance-agent/` | 394 |
 | Tests and fixtures | `scripts/`, `fixtures/` | 827 |
 | README | `README.md` | 243 |
-| **Total markdown** | 21 files | **5,099** |
+| **Total markdown** | 25 files | **5,439** |
 
 ---
 
@@ -149,7 +153,6 @@ report template. Candidate for relocation into this repo.
 | Fixtures for CAUTI, SSI, CDI, MDRO | only CLABSI has a boundary set | Medium | 1 session |
 | Worked examples per agent | contracts described, never shown filled in | Medium | 1 session |
 | Fixtures for the report and education agents | reconciliation and cause triage are untested | Medium | 1 session |
-| Relocate the retrospective-validation skill | lives in the user skills dir, not the repo | Low | 15 min |
 
 The rule registry remains the most consequential. The FDE Deployment Agent's
 capability manifest requires every rule to declare its feed requirements in a form
@@ -187,8 +190,9 @@ Automated: `scripts/conformance.sh`, run in CI on every push and pull request.
 | C10 | tools.md enforces cite-or-withhold | 7/7 |
 | C11 | States patient de-identification | 7/7 |
 | C12 | Template-level prohibitions present | 2/2 |
+| C13 | Every skill directory is loadable | 2/2 |
 
-**11 checks passed, 0 failed.** C9 is informational by design and never fails the
+**12 checks passed, 0 failed.** C9 is informational by design and never fails the
 build: the deployment, report, and education agents perform no clinical reasoning,
 so none has a reason to load surveillance definitions. C8b runs only when a
 planned section exists.
@@ -314,7 +318,7 @@ the work rather than after it.
 
 | Area | Status |
 |------|--------|
-| CI conformance | done - 13 checks on push and PR |
+| CI conformance | done - 14 checks on push and PR |
 | Fixture lint in CI | done |
 | Rule registry as YAML | open - the top item for cycle #3 |
 | Engine replay in CI | open - needs an actual engine to point at |
@@ -329,7 +333,7 @@ the work rather than after it.
 - [x] All cycle #1 findings resolved
 - [x] Agent roster completed, 7 of 7
 - [x] Conformance and fixture suites automated and negative-tested
-- [ ] Move the retrospective-validation skill into the repository
+- [x] Move the retrospective-validation skill into the repository
 
 ### 8.2 Next PDCA cycle
 
@@ -421,4 +425,5 @@ the deployment agent itself specifies.
 | 1.0 | 2026-08-19 | Completion report created for PDCA cycle #1 | Gyver |
 | 1.1 | 2026-08-19 | G-01/G-02/G-03 resolved; conformance re-run 40/40 | Gyver |
 | 1.2 | 2026-08-19 | Conformance suite automated as `scripts/conformance.sh` + CI; C12 added | Gyver |
+| 2.1 | 2026-08-19 | Retrospective-validation skill moved into the repo; C13 added and negative-tested | Gyver |
 | 2.0 | 2026-08-19 | Cycle #2: report and education agents, roster complete 7/7, Templates 14-17, CLABSI fixtures + replay runner, C8 rewrite + C8b, empirical boundary-case evidence | Gyver |

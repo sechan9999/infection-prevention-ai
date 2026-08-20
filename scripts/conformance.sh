@@ -42,7 +42,7 @@ assert() {
 
 echo
 echo "Structural conformance - infection-prevention-ai"
-echo "Agents found: $AGENT_COUNT"
+echo "Agents found: $AGENT_COUNT   Skills found: $(ls -d skills/*/ 2>/dev/null | wc -l | tr -d ' ')"
 echo
 
 # --- C1: every agent directory has the AGENT/workflow/tools triple -----------
@@ -158,6 +158,22 @@ grep -q "No template ever contains a diagnosis, an order, or a therapy recommend
 grep -q "No template ever contains a staff name or an individual performance finding." "$TEMPLATES" && n=$((n+1)) \
   || note "missing template rule: no staff name"
 assert C12 "template-level prohibitions present" "$n" "2"
+
+# --- C13: every skill directory is loadable ----------------------------------
+# The repo now carries more than one skill. A skill without SKILL.md, or with
+# frontmatter missing name/description, silently fails to load and looks like it
+# was never installed.
+SKILL_DIRS=(skills/*/)
+n=0
+for d in "${SKILL_DIRS[@]}"; do
+  f="$d/SKILL.md"
+  if [ -f "$f" ] && head -6 "$f" | grep -q "^name:" && head -6 "$f" | grep -q "^description:"; then
+    n=$((n+1))
+  else
+    note "skill not loadable (missing SKILL.md or name/description): $d"
+  fi
+done
+assert C13 "every skill directory is loadable" "$n" "${#SKILL_DIRS[@]}"
 
 echo
 if [ "$fail" -eq 0 ]; then
